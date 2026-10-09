@@ -1,12 +1,22 @@
-# OpenLJMDB
+<div align="center">
 
-**支持导入自动分类的本地 Markdown 个人知识库。**
+<img src="web/public/logo.png" alt="OpenLJMDB 项目图标" width="160" height="160" />
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+# OpenLJMDB —— 本地 Markdown 个人知识库
+
+> 根据笔记完整内容自动推荐知识库，显示匹配概率并支持逐篇确认，让 Markdown 笔记的整理、编辑、检索和备份更方便。
 
 **简体中文** | [English](README.en.md)
 
-OpenLJMDB 将零散笔记整理为知识库和树形文档目录，提供 Markdown 编辑与阅读、全文搜索、附件、历史版本、回收站、导入导出和备份恢复。基于 Vue 3 + TypeScript + Go + SQLite，数据保存在本机，无需外部数据库；日常编辑、阅读和检索可离线使用，导入自动分类按需连接外部分类服务。
+[简介](#简介) • [自动分类](#导入自动分类) • [功能特性](#功能亮点) • [项目截图](#项目截图) • [快速开始](#快速开始) • [分类服务配置](#配置自动分类) • [开发与验证](#开发与验证) • [参与共建](#更多文档与贡献) • [开源协议](#开源协议)
 
-[自动分类](#导入自动分类) · [功能亮点](#功能亮点) · [项目截图](#项目截图) · [快速开始](#快速开始) · [分类服务配置](#配置自动分类) · [开发与验证](#开发与验证)
+</div>
+
+## 简介
+
+OpenLJMDB 将零散笔记整理为知识库和树形文档目录，提供 Markdown 编辑与阅读、全文搜索、附件、历史版本、回收站、导入导出和备份恢复。基于 Vue 3 + TypeScript + Go + SQLite，数据保存在本机，无需外部数据库；日常编辑、阅读和检索可离线使用，导入自动分类按需连接外部分类服务。
 
 ## 导入自动分类
 
@@ -224,3 +234,7 @@ OpenLJMDB/
 项目定位为本机、单用户知识库，当前未提供登录鉴权，文档树暂不支持拖拽移动或重排。设计文档中的规划项与已交付功能可能存在差异，请以当前实现和验收记录为准。
 
 欢迎通过 [Issues](https://github.com/liangjie6/OpenLJMDB/issues) 反馈问题，或提交 Pull Request。报告问题时请附上系统、Go / Node.js 版本、复现步骤及经过脱敏的日志；修改代码后运行对应的前后端检查。
+
+## 开源协议
+
+本项目采用 [MIT License](LICENSE)。第三方依赖和资源遵循各自的许可证，详见[后端第三方依赖声明](backend/THIRD_PARTY_NOTICES.md)、[依赖许可证](backend/licenses/README.md)及[字体授权说明](web/public/fonts/jetbrains-maple-mono/README.md)。

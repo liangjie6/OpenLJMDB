@@ -1,12 +1,22 @@
-# OpenLJMDB
+<div align="center">
 
-**A local Markdown knowledge base with automatic classification during import.**
+<img src="web/public/logo.png" alt="OpenLJMDB project icon" width="160" height="160" />
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+# OpenLJMDB — Local Markdown knowledge base
+
+> Organize Markdown notes with content-based knowledge base recommendations, match probabilities, and per-note review, alongside editing, search, and backups.
 
 [简体中文](README.md) | **English**
 
-OpenLJMDB organizes scattered notes into knowledge bases and document trees. It provides Markdown editing and reading, full-text search, attachments, revision history, a recycle bin, import and export, and backup and restore. Built with Vue 3, TypeScript, Go, and SQLite, it stores data locally and requires no external database. Everyday editing, reading, and search work offline; automatic import classification connects to an external classification service when enabled.
+[Introduction](#introduction) • [Automatic classification](#automatic-import-classification) • [Features](#features) • [Screenshots](#screenshots) • [Quick start](#quick-start) • [Classification configuration](#configure-automatic-classification) • [Development and checks](#development-and-checks) • [Contributing](#more-documentation-and-contributing) • [License](#license)
 
-[Automatic classification](#automatic-import-classification) · [Features](#features) · [Screenshots](#screenshots) · [Quick start](#quick-start) · [Classification configuration](#configure-automatic-classification) · [Development and checks](#development-and-checks)
+</div>
+
+## Introduction
+
+OpenLJMDB organizes scattered notes into knowledge bases and document trees. It provides Markdown editing and reading, full-text search, attachments, revision history, a recycle bin, import and export, and backup and restore. Built with Vue 3, TypeScript, Go, and SQLite, it stores data locally and requires no external database. Everyday editing, reading, and search work offline; automatic import classification connects to an external classification service when enabled.
 
 ## Automatic import classification
 
@@ -228,3 +238,7 @@ The supporting documents below are primarily in Chinese.
 The project is designed as a local, single-user knowledge base. It currently has no login authentication, and the document tree does not yet support drag-and-drop movement or reordering. Planned features in design documents may differ from delivered functionality; refer to the current implementation and acceptance records.
 
 Report problems through [Issues](https://github.com/liangjie6/OpenLJMDB/issues) or submit a pull request. Include your operating system, Go / Node.js versions, reproduction steps, and sanitized logs when reporting a problem. Run the relevant backend and frontend checks after changing code.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE). Third-party dependencies and resources retain their respective licenses. See the [backend third-party notices](backend/THIRD_PARTY_NOTICES.md), [dependency licenses](backend/licenses/README.md), and [font licensing notes](web/public/fonts/jetbrains-maple-mono/README.md).
