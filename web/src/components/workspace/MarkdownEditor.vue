@@ -36,6 +36,27 @@ function onDomInput() {
   emit('dom-input')
 }
 
+function onPaste(event: ClipboardEvent) {
+  // Get clipboard data
+  const clipboardData = event.clipboardData
+  if (!clipboardData) return
+
+  const text = clipboardData.getData('text/plain')
+  if (!text) return
+
+  // Check if the pasted content contains complete markdown code blocks
+  // Pattern: ``` followed by content and closing ```
+  const hasCompleteCodeBlocks = /```[\s\S]*?```/.test(text)
+
+  if (hasCompleteCodeBlocks && instance.value) {
+    // Prevent default paste behavior
+    event.preventDefault()
+
+    // Insert the text directly without auto-pairing
+    instance.value.insertValue(text)
+  }
+}
+
 onMounted(async () => {
   // 首次打开编辑器时也能识别未标注语言的代码，无需先进入阅读模式。
   await loadScript(`${VDITOR_CDN}/dist/js/highlight.js/highlight.min.js?v=11.7.0`, 'vditorHljsScript').catch(() => undefined)
@@ -59,6 +80,7 @@ onMounted(async () => {
         ready.value = true
         editElement = (instance.value?.vditor.ir?.element as HTMLElement | undefined) ?? null
         editElement?.addEventListener('input', onDomInput)
+        editElement?.addEventListener('paste', onPaste)
         editElement?.setAttribute('aria-label', '正文编辑区')
         editElement?.setAttribute('aria-multiline', 'true')
         editElement?.setAttribute('role', 'textbox')
@@ -80,6 +102,7 @@ onBeforeUnmount(() => {
   destroyed = true
   observer?.disconnect()
   editElement?.removeEventListener('input', onDomInput)
+  editElement?.removeEventListener('paste', onPaste)
   try {
     instance.value?.destroy()
   } catch {

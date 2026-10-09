@@ -1125,7 +1125,10 @@ defineExpose({
       <div v-else-if="doc" class="doc-inner">
         <header class="doc-header">
           <nav class="breadcrumb" aria-label="文档位置">
-            <RouterLink v-if="kbId" :to="`/knowledge-bases/${kbId}`" class="crumb">{{ kb?.name ?? '知识库' }}</RouterLink>
+            <RouterLink v-if="kbId" :to="`/knowledge-bases/${kbId}`" class="crumb crumb-back">
+              <AppIcon name="arrow-left" :size="14" />
+              <span>{{ kb?.name ?? '知识库' }}</span>
+            </RouterLink>
             <template v-for="a in ancestors" :key="a.id">
               <span class="crumb-sep" aria-hidden="true">/</span>
               <RouterLink :to="documentPath(a.id)" class="crumb">{{ a.title }}</RouterLink>
@@ -1411,6 +1414,20 @@ defineExpose({
 
 .crumb:hover {
   color: var(--text);
+}
+
+.crumb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  transition: background-color 0.15s;
+}
+
+.crumb-back:hover {
+  background: var(--bg-hover);
+  text-decoration: none;
 }
 
 .doc-toolbar {
