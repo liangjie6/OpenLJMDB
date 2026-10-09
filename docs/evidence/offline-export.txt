@@ -1,0 +1,5 @@
+=== RUN   TestOfflineHTMLExportInBrowser
+    offline_export_test.go:128: offline file:// browser acceptance: {"formulas":2,"diagrams":2,"imageLoaded":true,"highlighted":true,"headingsDistinct":true,"fontLoaded":true,"sourceErrors":0,"network":[],"errors":[]}
+--- PASS: TestOfflineHTMLExportInBrowser (10.04s)
+PASS
+ok  	ljmdb/internal/backend	10.079s

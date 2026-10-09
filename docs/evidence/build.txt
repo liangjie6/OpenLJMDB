@@ -1,0 +1,22 @@
+PASS: scripts/build.sh completed for all six targets after final source changes.
+Recorded UTC: 2026-10-04T15:55:21.612197+00:00
+go version go1.27.1 linux/arm64
+CGO_ENABLED=0; trimpath; stripped release binaries; embedded migrations and offline export assets.
+
+dist/ljmdb-darwin-amd64:      Mach-O 64-bit x86_64 executable, flags:<|DYLDLINK|PIE>
+dist/ljmdb-darwin-arm64:      Mach-O 64-bit arm64 executable, flags:<|DYLDLINK|PIE>
+dist/ljmdb-linux-amd64:       ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, Go BuildID=Yd7HLAWncrdoyEhyfJgY/l2AHfQEEtSzerK6_h2Uo/xnWBKaBFUT3MsDfCPcNI/C5VeVITHty62o-8ay_sC, BuildID[sha1]=2c987fc38d0d2f4e204f9309a4a3eb37f8ced19a, stripped
+dist/ljmdb-linux-arm64:       ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=ZuSgRgeldEYHKosvg_U9/AaRUi7FbQ-vK1LTZaYwp/BKiMHUhFZFKjFl6kR4dC/AOS6GML5DizUoKbMTdT6, BuildID[sha1]=3d438902d09c47a29507b23394683ab56c15958f, stripped
+dist/ljmdb-windows-amd64.exe: PE32+ executable (console) x86-64, for MS Windows
+dist/ljmdb-windows-arm64.exe: PE32+ executable (console) Aarch64, for MS Windows
+
+d4d87d07289615285ca3ffcc5c2336ab56ab073d0c289cc488c5724c58231c38  ljmdb-darwin-amd64
+f35915cab3f6aec7907e9aba705ddd6be7710dae5078ba52fe508a95ddc79656  ljmdb-darwin-arm64
+bb5075734a38c6835bb2df27f453dd631a6bf319e5e2de767aa745bdd962a975  ljmdb-linux-amd64
+bd92f93bae726d4c01a0594100777942eabdf7c03bc2516a65ec7828cb3e0247  ljmdb-linux-arm64
+f4124de8053d6db4b2c9a1dcbc52613084da503c6c4d061abc6e33a6c4d38c16  ljmdb-windows-amd64.exe
+15d505afbeb67e6330b64e065142e044ce2c9e13bd94279e84b86234daf3b166  ljmdb-windows-arm64.exe
+
+PASS: SHA256SUMS verified against all six artifacts.
+PASS: third-party notice and license directory are present in dist.
+Cross-compilation only: macOS, Windows and Linux amd64 have not been run on target machines.

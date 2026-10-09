@@ -1,0 +1,138 @@
+?   	ljmdb/cmd/ljmdb	[no test files]
+=== RUN   TestAttachmentIdempotencyAndPendingUploadRetry
+--- PASS: TestAttachmentIdempotencyAndPendingUploadRetry (0.46s)
+=== RUN   TestAttachmentCleanupWaitsForActiveDownload
+--- PASS: TestAttachmentCleanupWaitsForActiveDownload (0.17s)
+=== RUN   TestAttachmentCleanupCompletesAfterFileWasAlreadyRemoved
+--- PASS: TestAttachmentCleanupCompletesAfterFileWasAlreadyRemoved (0.10s)
+=== RUN   TestAttachmentCleanupCancelsWhenReferencesUnexpectedlyExist
+--- PASS: TestAttachmentCleanupCancelsWhenReferencesUnexpectedlyExist (0.10s)
+=== RUN   TestAttachmentTypeLimitsAndPathSafety
+--- PASS: TestAttachmentTypeLimitsAndPathSafety (0.11s)
+=== RUN   TestAttachmentSharedHistoryTrashAndConfirmedCleanup
+--- PASS: TestAttachmentSharedHistoryTrashAndConfirmedCleanup (0.16s)
+=== RUN   TestAttachmentStartupCrashRecoveryAndNoAutomaticOrphanDeletion
+--- PASS: TestAttachmentStartupCrashRecoveryAndNoAutomaticOrphanDeletion (0.15s)
+=== RUN   TestSearchChineseLiteralPriorityPaginationAndDeletion
+--- PASS: TestSearchChineseLiteralPriorityPaginationAndDeletion (0.14s)
+=== RUN   TestBackupRestoreFreshDirectoryPreservesFullDatasetAndChangesEpoch
+--- PASS: TestBackupRestoreFreshDirectoryPreservesFullDatasetAndChangesEpoch (2.28s)
+=== RUN   TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema
+=== RUN   TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema/database_hash
+=== RUN   TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema/missing_resource
+=== RUN   TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema/newer_schema
+--- PASS: TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema (0.36s)
+    --- PASS: TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema/database_hash (0.03s)
+    --- PASS: TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema/missing_resource (0.02s)
+    --- PASS: TestBackupValidationRejectsDamageMissingUnexpectedAndNewerSchema/newer_schema (0.01s)
+=== RUN   TestBackupLargeCompressibleAttachmentHasIndependentLimits
+--- PASS: TestBackupLargeCompressibleAttachmentHasIndependentLimits (2.68s)
+=== RUN   TestRecoverRestoreRollsBackEveryPartialFileSwitch
+=== RUN   TestRecoverRestoreRollsBackEveryPartialFileSwitch/0
+=== RUN   TestRecoverRestoreRollsBackEveryPartialFileSwitch/1
+=== RUN   TestRecoverRestoreRollsBackEveryPartialFileSwitch/2
+=== RUN   TestRecoverRestoreRollsBackEveryPartialFileSwitch/3
+=== RUN   TestRecoverRestoreRollsBackEveryPartialFileSwitch/4
+--- PASS: TestRecoverRestoreRollsBackEveryPartialFileSwitch (0.78s)
+    --- PASS: TestRecoverRestoreRollsBackEveryPartialFileSwitch/0 (0.20s)
+    --- PASS: TestRecoverRestoreRollsBackEveryPartialFileSwitch/1 (0.12s)
+    --- PASS: TestRecoverRestoreRollsBackEveryPartialFileSwitch/2 (0.16s)
+    --- PASS: TestRecoverRestoreRollsBackEveryPartialFileSwitch/3 (0.13s)
+    --- PASS: TestRecoverRestoreRollsBackEveryPartialFileSwitch/4 (0.17s)
+=== RUN   TestBackupValidatorsHonorCancellation
+--- PASS: TestBackupValidatorsHonorCancellation (0.04s)
+=== RUN   TestRestoreCompletionLogFailureRollsBackBeforeWritesResume
+--- PASS: TestRestoreCompletionLogFailureRollsBackBeforeWritesResume (0.21s)
+=== RUN   TestJobResultNeverSucceedsWithoutDurableTerminalRecord
+--- PASS: TestJobResultNeverSucceedsWithoutDurableTerminalRecord (0.08s)
+=== RUN   TestHTTPRestoreCompletionLogFailureReturnsPriorWritableDataset
+--- PASS: TestHTTPRestoreCompletionLogFailureReturnsPriorWritableDataset (2.82s)
+=== RUN   TestJobQueryOnlyTerminalFailureSurvivesRestartAsCancelled
+--- PASS: TestJobQueryOnlyTerminalFailureSurvivesRestartAsCancelled (0.12s)
+=== RUN   TestCoreConcurrentSaveConflictAndDeletedSave
+--- PASS: TestCoreConcurrentSaveConflictAndDeletedSave (0.12s)
+=== RUN   TestCoreHistoryRestoreAndFTSLifecycle
+--- PASS: TestCoreHistoryRestoreAndFTSLifecycle (0.18s)
+=== RUN   TestCoreEmptyHistoryDetailKeepsMarkdownField
+--- PASS: TestCoreEmptyHistoryDetailKeepsMarkdownField (0.10s)
+=== RUN   TestCoreIndependentTrashBatchesAndLibraryPurge
+--- PASS: TestCoreIndependentTrashBatchesAndLibraryPurge (0.20s)
+=== RUN   TestCoreRestoreLibraryKeepsEarlierDeletedSubtree
+--- PASS: TestCoreRestoreLibraryKeepsEarlierDeletedSubtree (0.11s)
+=== RUN   TestCorePurgedParentRestoresAtRootWithSurvivingAncestor
+--- PASS: TestCorePurgedParentRestoresAtRootWithSurvivingAncestor (0.50s)
+=== RUN   TestCoreActiveTreeNodeLimitRejectsCreateAndRestoreAtomically
+--- PASS: TestCoreActiveTreeNodeLimitRejectsCreateAndRestoreAtomically (1.55s)
+=== RUN   TestCoreTreeDepthValidationAndAtomicRestore
+--- PASS: TestCoreTreeDepthValidationAndAtomicRestore (1.12s)
+=== RUN   TestCoreTrashConfirmationBindsContentAndCacheRefresh
+--- PASS: TestCoreTrashConfirmationBindsContentAndCacheRefresh (0.17s)
+=== RUN   TestCoreHistoryWindowRetentionAndUnavailableAttachmentRollback
+--- PASS: TestCoreHistoryWindowRetentionAndUnavailableAttachmentRollback (0.20s)
+=== RUN   TestCoreSchemaDriverCapabilitiesUpgradeAndRefusal
+--- PASS: TestCoreSchemaDriverCapabilitiesUpgradeAndRefusal (0.40s)
+=== RUN   TestCoreMigrationFailureRollsBackAndReportsSnapshot
+--- PASS: TestCoreMigrationFailureRollsBackAndReportsSnapshot (0.06s)
+=== RUN   TestLocalSecurityAndIdempotentCreation
+--- PASS: TestLocalSecurityAndIdempotentCreation (0.06s)
+=== RUN   TestDirectoryLockAndPersistedEpoch
+--- PASS: TestDirectoryLockAndPersistedEpoch (0.09s)
+=== RUN   TestSettingsReductionAndHealthDuringMaintenance
+--- PASS: TestSettingsReductionAndHealthDuringMaintenance (0.05s)
+=== RUN   TestErrorMessagesDontExposeContent
+--- PASS: TestErrorMessagesDontExposeContent (0.00s)
+=== RUN   TestStaticIntegrationPreservesAPIIsolation
+--- PASS: TestStaticIntegrationPreservesAPIIsolation (0.06s)
+=== RUN   TestOfflineHTMLExportInBrowser
+    offline_export_test.go:35: Playwright unavailable for optional browser acceptance
+--- SKIP: TestOfflineHTMLExportInBrowser (0.08s)
+=== RUN   TestBackendPerformance
+    performance_test.go:17: set LJMDB_RUN_PERF=1 to run the 10,000-document capacity scenario
+--- SKIP: TestBackendPerformance (0.00s)
+=== RUN   TestRenderContractAndSafeReferences
+--- PASS: TestRenderContractAndSafeReferences (0.00s)
+=== RUN   TestRewriteLinksPreservesSourceAndCode
+--- PASS: TestRewriteLinksPreservesSourceAndCode (0.00s)
+=== RUN   TestRewriteLinksEscapedAndNestedDestinations
+--- PASS: TestRewriteLinksEscapedAndNestedDestinations (0.00s)
+=== RUN   TestRendererOptimizationPreservesTableAndMarkdownContract
+--- PASS: TestRendererOptimizationPreservesTableAndMarkdownContract (0.01s)
+=== RUN   TestAllowedHTMLURLAttributesBecomeReferencesAndRewrite
+--- PASS: TestAllowedHTMLURLAttributesBecomeReferencesAndRewrite (0.00s)
+=== RUN   TestRenderSearchPreservesWordBoundariesAcrossBreaks
+--- PASS: TestRenderSearchPreservesWordBoundariesAcrossBreaks (0.00s)
+=== RUN   TestSaveStageProfile
+    save_profile_test.go:16: set LJMDB_PROFILE_SAVE=1 to measure render and durable SQLite save stages
+--- SKIP: TestSaveStageProfile (0.00s)
+=== RUN   TestTransferManifestRoundtripNewIDsTreeLinksAttachments
+--- PASS: TestTransferManifestRoundtripNewIDsTreeLinksAttachments (0.36s)
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/traversal
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/absolute
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/windows
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/backslash
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/case_collision
+=== RUN   TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/depth
+--- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives (0.75s)
+    --- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/traversal (0.01s)
+    --- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/absolute (0.01s)
+    --- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/windows (0.01s)
+    --- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/backslash (0.01s)
+    --- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/case_collision (0.01s)
+    --- PASS: TestTransferGenericDirectoriesMissingResourcesAndSafeArchives/depth (0.01s)
+=== RUN   TestTransferTextExportToleratesMissingResourceAndKeepsH1
+--- PASS: TestTransferTextExportToleratesMissingResourceAndKeepsH1 (0.16s)
+=== RUN   TestTransferManifestCycleHashAndUnexpectedFiles
+--- PASS: TestTransferManifestCycleHashAndUnexpectedFiles (0.16s)
+=== RUN   TestTransferFailedCommitRegistersPreparedFilesWithoutPartialTree
+--- PASS: TestTransferFailedCommitRegistersPreparedFilesWithoutPartialTree (0.13s)
+=== RUN   TestTransferJobDownloadRejectsRestoredMetadataFileAccess
+--- PASS: TestTransferJobDownloadRejectsRestoredMetadataFileAccess (0.09s)
+PASS
+ok  	ljmdb/internal/backend	17.526s
+=== RUN   TestPrecedenceAndLoopback
+--- PASS: TestPrecedenceAndLoopback (0.00s)
+=== RUN   TestInvalidEnvironmentPortCanBeOverridden
+--- PASS: TestInvalidEnvironmentPortCanBeOverridden (0.00s)
+PASS
+ok  	ljmdb/internal/config	0.021s

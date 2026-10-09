@@ -1,0 +1,20 @@
+[Unit]
+Description=OpenLJMDB knowledge base API (loopback :19955)
+After=network.target
+
+[Service]
+Type=simple
+User=<DEPLOY_USER>
+Group=<DEPLOY_USER>
+WorkingDirectory=/path/to/OpenLJMDB
+EnvironmentFile=-/etc/openljmdb/classifier.env
+ExecStart=/path/to/OpenLJMDB/deploy/bin/ljmdb --host 127.0.0.1 --port 19955 --data-dir /path/to/OpenLJMDB-data --no-open
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

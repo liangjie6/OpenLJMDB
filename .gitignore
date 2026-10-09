@@ -1,0 +1,12 @@
+/data/
+/dist/
+*.db
+*.db-wal
+*.db-shm
+runtime.lock
+*.test
+coverage.out
+/web/node_modules/
+/web/dist/
+/deploy/bin/
+/deploy/backups/

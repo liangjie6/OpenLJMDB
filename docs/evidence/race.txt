@@ -1,0 +1,3 @@
+?   	ljmdb/cmd/ljmdb	[no test files]
+ok  	ljmdb/internal/backend	48.365s
+ok  	ljmdb/internal/config	1.025s

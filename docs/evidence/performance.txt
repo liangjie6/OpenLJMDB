@@ -1,0 +1,10 @@
+=== RUN   TestBackendPerformance
+    performance_test.go:55: platform=linux/arm64 CPUs=4 documents=10000 markdown_bytes=20489
+    performance_test.go:67: search="Markdown" all_documents_match=true warmed_max=869.92883ms best=852.926938ms
+    performance_test.go:67: search="中文短词" all_documents_match=true warmed_max=756.112489ms best=745.308203ms
+    performance_test.go:67: search="%" all_documents_match=true warmed_max=1.124942165s best=1.101078303s
+    performance_test.go:74: tree_nodes=10000 duration=576.589519ms response_bytes=1578988
+    performance_test.go:86: save_markdown_bytes=102300 samples=20 P95=54.08681ms max=59.616424ms
+--- PASS: TestBackendPerformance (63.48s)
+PASS
+ok  	ljmdb/internal/backend	63.513s
