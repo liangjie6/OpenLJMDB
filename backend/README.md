@@ -1,6 +1,6 @@
 # OpenLJMDB 后端
 
-依据 `docs/01`—`docs/05` 实现的本地 Markdown 知识库后端。使用 Go、SQLite WAL、FTS5 和 Lute，运行时无需外部数据库或互联网。本次不包含前端应用。
+本地 Markdown 知识库的 Go 后端，使用 SQLite WAL、FTS5 和 Lute。基础功能运行时无需外部数据库或互联网，可选的导入自动分类需要连接分类服务。完整项目和中英文使用说明见[根 README](../README.md)，前端位于 `web/`。
 
 ## 启动
 
@@ -20,7 +20,7 @@ make build
 ./dist/ljmdb --version
 ```
 
-前端模型完成构建后，可用 `--web-dir ./web/dist` 从同一个回环服务提供构建产物及 SPA 路由。后端还提供 `App.FrontendFS`，便于前端交付时用 `embed.FS` 接入单二进制；本后端交付不嵌入或创建前端应用。
+前端完成构建后，在项目根目录可用 `./backend/dist/ljmdb --web-dir ./web/dist --no-open` 从同一个回环服务提供页面、SPA 路由和 API。后端还提供 `App.FrontendFS`，可用 `embed.FS` 接入单二进制；当前构建脚本不嵌入前端资源。
 
 程序以 OS 文件锁独占数据目录，端口占用、目录不可写、数据库损坏及不支持的较新 schema 均会停止启动，不会改用另一套空数据库。使用 Ctrl+C / SIGTERM 正常退出。不要在程序运行时直接复制活跃数据库作为备份。
 
