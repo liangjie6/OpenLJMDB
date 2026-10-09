@@ -31,29 +31,34 @@ const ready = ref(false)
 let destroyed = false
 let editElement: HTMLElement | null = null
 let observer: MutationObserver | null = null
+let isPasting = false
 
 function onDomInput() {
   emit('dom-input')
 }
 
-function onPaste(event: ClipboardEvent) {
-  // Get clipboard data
-  const clipboardData = event.clipboardData
-  if (!clipboardData) return
+function onPaste() {
+  // Mark that we're in a paste operation
+  isPasting = true
+  // Reset the flag after paste completes
+  setTimeout(() => {
+    isPasting = false
+  }, 50)
+}
 
-  const text = clipboardData.getData('text/plain')
-  if (!text) return
-
-  // Check if the pasted content contains complete markdown code blocks
-  // Pattern: ``` followed by content and closing ```
-  const hasCompleteCodeBlocks = /```[\s\S]*?```/.test(text)
-
-  if (hasCompleteCodeBlocks && instance.value) {
-    // Prevent default paste behavior
-    event.preventDefault()
-
-    // Insert the text directly without auto-pairing
-    instance.value.insertValue(text)
+function onBeforeInput(event: InputEvent) {
+  // Prevent auto-pairing during paste operations
+  if (isPasting && event.inputType === 'insertText' && event.data === '`') {
+    // Check if this is an auto-paired backtick
+    const selection = window.getSelection()
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0)
+      const nextChar = range.startContainer.textContent?.charAt(range.startOffset)
+      // If there's already a backtick after cursor, this is auto-pairing, prevent it
+      if (nextChar === '`') {
+        event.preventDefault()
+      }
+    }
   }
 }
 
@@ -81,6 +86,7 @@ onMounted(async () => {
         editElement = (instance.value?.vditor.ir?.element as HTMLElement | undefined) ?? null
         editElement?.addEventListener('input', onDomInput)
         editElement?.addEventListener('paste', onPaste)
+        editElement?.addEventListener('beforeinput', onBeforeInput)
         editElement?.setAttribute('aria-label', '正文编辑区')
         editElement?.setAttribute('aria-multiline', 'true')
         editElement?.setAttribute('role', 'textbox')
@@ -103,6 +109,7 @@ onBeforeUnmount(() => {
   observer?.disconnect()
   editElement?.removeEventListener('input', onDomInput)
   editElement?.removeEventListener('paste', onPaste)
+  editElement?.removeEventListener('beforeinput', onBeforeInput)
   try {
     instance.value?.destroy()
   } catch {
