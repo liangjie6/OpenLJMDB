@@ -1,5 +1,7 @@
 /data/
 /dist/
+/backend/data/
+/backend/dist/
 *.db
 *.db-wal
 *.db-shm
@@ -10,3 +12,4 @@ coverage.out
 /web/dist/
 /deploy/bin/
 /deploy/backups/
+__pycache__/

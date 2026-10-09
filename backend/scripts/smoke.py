@@ -12,7 +12,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-binary = str(Path(sys.argv[1] if len(sys.argv) > 1 else 'dist/ljmdb').resolve())
+backend_dir = Path(__file__).resolve().parents[1]
+binary = str(Path(sys.argv[1] if len(sys.argv) > 1 else backend_dir / 'dist/ljmdb').resolve())
 
 def unused_port():
     with socket.socket() as sock:

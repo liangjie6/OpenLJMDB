@@ -5,14 +5,15 @@ import shutil
 import subprocess
 from pathlib import Path
 
-stream = subprocess.check_output(['go', 'list', '-m', '-json', 'all'], text=True)
+backend_dir = Path(__file__).resolve().parents[1]
+stream = subprocess.check_output(['go', 'list', '-m', '-json', 'all'], text=True, cwd=backend_dir)
 decoder = json.JSONDecoder()
 modules = []
 while stream.strip():
     value, end = decoder.raw_decode(stream.lstrip())
     modules.append(value)
     stream = stream.lstrip()[end:]
-root = Path('licenses')
+root = backend_dir / 'licenses'
 root.mkdir(exist_ok=True)
 rows = []
 for module in modules:

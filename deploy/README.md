@@ -14,7 +14,7 @@ npm ci
 npm run build
 cd ..
 mkdir -p deploy/bin
-go build -o deploy/bin/ljmdb ./cmd/ljmdb
+go -C backend build -o ../deploy/bin/ljmdb ./cmd/ljmdb
 sudo bash deploy/install.sh
 ```
 

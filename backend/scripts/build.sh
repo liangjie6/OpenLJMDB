@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+backend_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+cd "$backend_dir"
 mkdir -p dist
 python3 scripts/licenses.py
 for target in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64 windows/arm64; do

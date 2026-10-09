@@ -1,10 +1,17 @@
-.PHONY: build test check release
-build:
-	CGO_ENABLED=0 go build -trimpath -o dist/ljmdb ./cmd/ljmdb
+.PHONY: build backend-build test check release web-build
+
+# Root-level convenience targets for the complete application.
+build backend-build:
+	$(MAKE) -C backend build
+
 test:
-	go test ./...
+	$(MAKE) -C backend test
+
 check:
-	go vet ./...
-	go test -race ./...
+	$(MAKE) -C backend check
+
 release:
-	bash scripts/build.sh
+	$(MAKE) -C backend release
+
+web-build:
+	npm --prefix web run build
