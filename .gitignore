@@ -13,3 +13,7 @@ coverage.out
 /deploy/bin/
 /deploy/backups/
 __pycache__/
+.env
+.env.*
+*.env
+!.env.example

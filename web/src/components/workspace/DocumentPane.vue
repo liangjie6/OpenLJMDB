@@ -8,6 +8,7 @@ import ErrorBlock from '@/components/base/ErrorBlock.vue'
 import BaseDialog from '@/components/base/BaseDialog.vue'
 import HighlightedText from '@/components/base/HighlightedText.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
+import ImageExportDialog from './ImageExportDialog.vue'
 import MarkdownEditor from './MarkdownEditor.vue'
 import MarkdownViewer from './MarkdownViewer.vue'
 import OutlinePanel from './OutlinePanel.vue'
@@ -106,6 +107,13 @@ const historyOpen = ref(false)
 const restoringHistory = ref(false)
 const linkPickerOpen = ref(false)
 const exportOpen = ref(false)
+const imageExportOpen = ref(false)
+const imageExportSnapshot = shallowRef<{
+  doc: DocumentDetail
+  title: string
+  markdown: string
+  isEditing: boolean
+} | null>(null)
 const sourceOpen = ref(false)
 
 const outline = shallowRef<OutlineItem[]>([])
@@ -725,6 +733,22 @@ function exportLocal() {
   exportDraftMarkdown(local.title, local.markdown)
 }
 
+function openImageExport() {
+  const current = doc.value
+  if (!current) return
+  const isEditing = mode.value === 'edit'
+  const local = isEditing ? controller.value?.getLocalContent() : null
+  imageExportSnapshot.value = {
+    doc: { ...current },
+    title: isEditing ? titleInput.value : current.title,
+    markdown: isEditing
+      ? editorRef.value?.getValue() ?? local?.markdown ?? current.markdown
+      : current.markdown,
+    isEditing,
+  }
+  imageExportOpen.value = true
+}
+
 async function reloadFromServer() {
   try {
     const server = await api.documents.get(props.docId)
@@ -834,6 +858,7 @@ const menuItems = computed<MenuItem[]>(() => {
     { key: 'copy-url', label: '复制页面地址', icon: 'copy' },
     ...(mode.value === 'edit' ? [{ key: 'insert-link', label: '插入文档链接', icon: 'file-text' }] : []),
     { key: 'export', label: '导出…', icon: 'export' },
+    { key: 'export-image', label: '导出为图片…', icon: 'image' },
     ...(mode.value === 'edit' ? [{ key: 'export-draft', label: '导出当前编辑内容', icon: 'download' }] : []),
     {
       key: 'child',
@@ -866,6 +891,9 @@ function onMenu(key: string) {
       break
     case 'export':
       exportOpen.value = true
+      break
+    case 'export-image':
+      openImageExport()
       break
     case 'export-draft':
       exportLocal()
@@ -1357,6 +1385,15 @@ defineExpose({
       :target-id="doc.id"
       :name="doc.title"
       :unsaved="!!saveView?.dirty"
+      @image-export="openImageExport"
+    />
+    <ImageExportDialog
+      v-if="imageExportOpen && imageExportSnapshot"
+      v-model:open="imageExportOpen"
+      :doc="imageExportSnapshot.doc"
+      :current-title="imageExportSnapshot.title"
+      :current-markdown="imageExportSnapshot.markdown"
+      :is-editing="imageExportSnapshot.isEditing"
     />
     <BaseDialog v-if="doc" v-model:open="sourceOpen" title="源码中的匹配" size="lg">
       <p class="muted small">以下为 Markdown 源码，高亮处为“{{ searchQuery }}”的匹配位置（共 {{ sourceRanges.length }} 处）。</p>

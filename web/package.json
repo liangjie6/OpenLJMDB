@@ -14,6 +14,8 @@
   "dependencies": {
     "@types/dompurify": "^3.0.5",
     "dompurify": "^3.4.16",
+    "fflate": "^0.8.3",
+    "html-to-image": "^1.11.13",
     "pinia": "^2.2.0",
     "vditor": "3.11.3",
     "vue": "^3.5.0",

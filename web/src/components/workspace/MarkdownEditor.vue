@@ -31,35 +31,45 @@ const ready = ref(false)
 let destroyed = false
 let editElement: HTMLElement | null = null
 let observer: MutationObserver | null = null
-let isPasting = false
+const forwardedPastes = new WeakSet<ClipboardEvent>()
 
 function onDomInput() {
   emit('dom-input')
 }
 
-function onPaste() {
-  // Mark that we're in a paste operation
-  isPasting = true
-  // Reset the flag after paste completes
-  setTimeout(() => {
-    isPasting = false
-  }, 50)
-}
+function onPaste(event: ClipboardEvent) {
+  if (forwardedPastes.has(event) || !editElement || editElement.getAttribute('contenteditable') !== 'true') return
+  const clipboard = event.clipboardData
+  if (!clipboard || clipboard.files.length > 0) return
+  const text = clipboard.getData('text/plain')
+  const hasFrontMatter = /^\uFEFF?---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*(?:\r?\n|$)/.test(text)
+  const hasCodeFence =
+    /^ {0,3}(`{3,})[^`\r\n]*\r?\n[\s\S]*?^ {0,3}\1`*[ \t]*(?:\r?\n|$)/m.test(text) ||
+    /^ {0,3}(~{3,})(?!~)[^\r\n]*\r?\n[\s\S]*?^ {0,3}\1~*[ \t]*(?:\r?\n|$)/m.test(text)
+  if (!hasFrontMatter && !hasCodeFence) return
 
-function onBeforeInput(event: InputEvent) {
-  // Prevent auto-pairing during paste operations
-  if (isPasting && event.inputType === 'insertText' && event.data === '`') {
-    // Check if this is an auto-paired backtick
-    const selection = window.getSelection()
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0)
-      const nextChar = range.startContainer.textContent?.charAt(range.startOffset)
-      // If there's already a backtick after cursor, this is auto-pairing, prevent it
-      if (nextChar === '`') {
-        event.preventDefault()
-      }
-    }
+  // 在已有代码 / HTML 源码中粘贴时仍插入字面文本，不解析为 Markdown。
+  const selection = window.getSelection()
+  if (!selection?.rangeCount) return
+  const range = selection.getRangeAt(0)
+  for (const node of [range.startContainer, range.endContainer]) {
+    if (!editElement.contains(node)) return
+    const element = node instanceof Element ? node : node.parentElement
+    if (element?.closest('code, [data-type="code-block"], [data-type="html-block"]')) return
   }
+
+  onDomInput()
+  if (!clipboard.getData('text/html')) return
+
+  // Vditor 会把剪贴板的 pre / 等宽字体 HTML 自动包成代码块。
+  // 转发纯文本，沿用其 Markdown 解析、预览渲染和撤销流程。
+  const data = new DataTransfer()
+  data.setData('text/plain', text)
+  const plainPaste = new ClipboardEvent('paste', { clipboardData: data, bubbles: true, cancelable: true })
+  forwardedPastes.add(plainPaste)
+  event.preventDefault()
+  event.stopImmediatePropagation()
+  editElement.dispatchEvent(plainPaste)
 }
 
 onMounted(async () => {
@@ -85,8 +95,7 @@ onMounted(async () => {
         ready.value = true
         editElement = (instance.value?.vditor.ir?.element as HTMLElement | undefined) ?? null
         editElement?.addEventListener('input', onDomInput)
-        editElement?.addEventListener('paste', onPaste)
-        editElement?.addEventListener('beforeinput', onBeforeInput)
+        editElement?.addEventListener('paste', onPaste, true)
         editElement?.setAttribute('aria-label', '正文编辑区')
         editElement?.setAttribute('aria-multiline', 'true')
         editElement?.setAttribute('role', 'textbox')
@@ -108,8 +117,7 @@ onBeforeUnmount(() => {
   destroyed = true
   observer?.disconnect()
   editElement?.removeEventListener('input', onDomInput)
-  editElement?.removeEventListener('paste', onPaste)
-  editElement?.removeEventListener('beforeinput', onBeforeInput)
+  editElement?.removeEventListener('paste', onPaste, true)
   try {
     instance.value?.destroy()
   } catch {

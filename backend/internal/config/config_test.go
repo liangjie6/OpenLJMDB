@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 )
@@ -36,5 +37,27 @@ func TestInvalidEnvironmentPortCanBeOverridden(t *testing.T) {
 	}
 	if _, err := Parse(nil); err == nil {
 		t.Fatal("accepted invalid environment port without a CLI override")
+	}
+}
+
+func TestLoadEnvFile(t *testing.T) {
+	t.Setenv("LJMDB_TEST_BASE_URL", "")
+	t.Setenv("LJMDB_TEST_API_KEY", "")
+	tmpDir := t.TempDir()
+	envPath := filepath.Join(tmpDir, ".env")
+	content := `# comment line
+LJMDB_TEST_BASE_URL="https://example.com"
+export LJMDB_TEST_API_KEY='secret-key-123'
+EMPTY_VAL=
+`
+	if err := os.WriteFile(envPath, []byte(content), 0600); err != nil {
+		t.Fatal(err)
+	}
+	loadEnvFile(envPath)
+	if got := os.Getenv("LJMDB_TEST_BASE_URL"); got != "https://example.com" {
+		t.Fatalf("expected https://example.com, got %s", got)
+	}
+	if got := os.Getenv("LJMDB_TEST_API_KEY"); got != "secret-key-123" {
+		t.Fatalf("expected secret-key-123, got %s", got)
 	}
 }

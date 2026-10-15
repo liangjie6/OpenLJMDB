@@ -19,6 +19,7 @@ type Config struct {
 }
 
 func Parse(args []string) (Config, error) {
+	LoadEnv()
 	var c Config
 	host := os.Getenv("LJMDB_HOST")
 	if host == "" {

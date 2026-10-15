@@ -1,0 +1,135 @@
+/* OpenLJMDB 图片导出专用独立样式表 */
+
+.export-offscreen-sandbox {
+  position: fixed !important;
+  left: -99999px !important;
+  top: 0 !important;
+  width: 1400px !important;
+  height: 1200px !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: -9999 !important;
+}
+
+/* 导出目标容器均保持标准流布局，防止 html-to-image foreignObject 计算坐标偏移 */
+.export-render-canvas,
+.export-page-card {
+  position: static !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 移除正文中的复制代码按钮 */
+.export-render-canvas .ljmdb-code-copy,
+.export-page-card .ljmdb-code-copy,
+.export-paper-preview .ljmdb-code-copy {
+  display: none !important;
+}
+
+/* 清除搜索匹配高亮标记，保持正文自然视觉 */
+.export-render-canvas mark,
+.export-render-canvas .ljmdb-hit,
+.export-page-card mark,
+.export-page-card .ljmdb-hit,
+.export-paper-preview mark,
+.export-paper-preview .ljmdb-hit {
+  background: transparent !important;
+  outline: none !important;
+  color: inherit !important;
+}
+
+/* 长代码行在导出时折行展示，杜绝横向被裁切 */
+.export-document-content pre > code.hljs,
+.export-render-canvas pre > code.hljs,
+.export-page-card pre > code.hljs,
+.export-paper-preview pre > code.hljs {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+  overflow-wrap: break-word !important;
+  overflow-x: visible !important;
+}
+
+.export-document-content pre.ljmdb-code-block,
+.export-render-canvas pre.ljmdb-code-block,
+.export-page-card pre.ljmdb-code-block,
+.export-paper-preview pre.ljmdb-code-block {
+  overflow: visible !important;
+}
+
+/* 多页卡片固定尺寸与弹性流 */
+.export-page-card {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.export-page-header {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.export-page-body {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+.export-page-footer {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+/* 超大图表与图片自适应缩放，防止超出固定页高 */
+.export-page-card img,
+.export-page-card svg,
+.export-render-canvas img {
+  max-width: 100% !important;
+  height: auto !important;
+  box-sizing: border-box !important;
+}
+
+.export-page-card .vditor-reset img,
+.export-page-card .language-mermaid svg {
+  max-height: 100% !important;
+  object-fit: contain !important;
+}
+
+/* 跨域与破损图片占位展示框 */
+.export-cors-placeholder,
+.export-broken-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border: 1px dashed var(--border-strong, #ccc);
+  border-radius: var(--radius, 6px);
+  background: var(--bg-soft, rgba(0, 0, 0, 0.03));
+  color: var(--text-2, #666);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.export-cors-placeholder .cors-icon,
+.export-broken-placeholder .broken-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.export-document-content { display: flow-root; }
+.export-document-content table { max-width: 100%; table-layout: fixed; }
+.export-document-content th, .export-document-content td { overflow-wrap: anywhere; }
+.export-document-content img, .export-document-content svg { max-width: 100%; }
+
+.export-document-content .language-mermaid { overflow: visible !important; }

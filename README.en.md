@@ -49,7 +49,7 @@ ZIP archives preserve their document hierarchy and use one destination for the e
 | Images and attachments | Upload, paste, or drag in images and attachments; manage references and clean up unreferenced attachments |
 | History and recycle bin | View and restore revisions; recover deleted content from the recycle bin |
 | Import and automatic classification | Bulk Markdown previews, per-file classification and destination review, and ZIP imports that preserve structure |
-| Content export | Markdown, HTML, and ZIP archives with resources for migration and offline reading |
+| Content export | Markdown, HTML, and ZIP archives with resources; image export with background styles, a single PNG, or paginated PNGs in a ZIP |
 | Full backup and restore | Preserve documents, attachments, revisions, the recycle bin, and settings; validate restores and retain a pre-restore copy |
 | Appearance and layout | Light, dark, or system theme; collapsible sidebar and responsive layout |
 

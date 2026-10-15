@@ -25,7 +25,10 @@ const props = defineProps<{
   unsaved?: boolean
 }>()
 
-const emit = defineEmits<{ (e: 'update:open', value: boolean): void }>()
+const emit = defineEmits<{
+  (e: 'update:open', value: boolean): void
+  (e: 'image-export'): void
+}>()
 
 type FormatKey = 'markdown-zip' | 'html-zip' | 'markdown-plain'
 const format = ref<FormatKey>('markdown-zip')
@@ -188,6 +191,20 @@ const PHASE: Record<string, string> = {
           </span>
         </label>
       </fieldset>
+      <div v-if="scope === 'document'" class="notice notice-info image-export-banner">
+        <AppIcon name="image" class="notice-icon" :size="18" />
+        <div class="notice-body">
+          需要生成单页长图或多页卡片？可使用
+          <button
+            type="button"
+            class="btn-link"
+            style="font-weight: 600;"
+            @click="emit('image-export'); emit('update:open', false)"
+          >
+            导出为图片…
+          </button>
+        </div>
+      </div>
     </template>
 
     <template v-else-if="stage === 'running'">
@@ -292,5 +309,9 @@ const PHASE: Record<string, string> = {
 .report ul {
   margin: 4px 0 10px;
   padding-left: 18px;
+}
+
+.image-export-banner {
+  margin-top: 14px;
 }
 </style>
