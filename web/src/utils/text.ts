@@ -78,11 +78,6 @@ export function escapeHtml(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 }
 
-export function truncate(text: string, maxCodePoints: number): string {
-  const chars = codePoints(text)
-  return chars.length <= maxCodePoints ? text : `${chars.slice(0, maxCodePoints).join('')}…`
-}
-
 export function utf8Bytes(text: string): number {
   return new TextEncoder().encode(text).length
 }

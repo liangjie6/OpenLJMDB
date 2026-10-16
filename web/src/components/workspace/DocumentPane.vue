@@ -9,7 +9,7 @@ import BaseDialog from '@/components/base/BaseDialog.vue'
 import HighlightedText from '@/components/base/HighlightedText.vue'
 import ExportDialog from '@/components/ExportDialog.vue'
 import ImageExportDialog from './ImageExportDialog.vue'
-import MarkdownEditor from './MarkdownEditor.vue'
+import ArticleEditor from './ArticleEditor.vue'
 import MarkdownViewer from './MarkdownViewer.vue'
 import OutlinePanel from './OutlinePanel.vue'
 import SaveStatus from './SaveStatus.vue'
@@ -72,12 +72,13 @@ const loading = ref(true)
 const loadError = ref<unknown>(null)
 const missing = ref<{ trashed: boolean; batchId: string | null; drafts: number } | null>(null)
 const mode = ref<'read' | 'edit'>(props.initialMode)
+const sourceEditing = ref(false)
 const switching = ref(false)
 
 const editSessionId = ref<string | null>(null)
 const controller = shallowRef<SaveController | null>(null)
 const saveView = ref<SaveSnapshotView | null>(null)
-const editorRef = ref<InstanceType<typeof MarkdownEditor> | null>(null)
+const editorRef = ref<InstanceType<typeof ArticleEditor> | null>(null)
 const viewerRef = ref<InstanceType<typeof MarkdownViewer> | null>(null)
 const scrollEl = ref<HTMLElement | null>(null)
 const titleEl = ref<HTMLInputElement | null>(null)
@@ -450,8 +451,12 @@ async function prepareLeave(): Promise<LeaveResult> {
   }
 }
 
-async function enterEdit() {
-  if (mode.value === 'edit' || !doc.value || switching.value) return
+async function enterEdit(source = false) {
+  if (!doc.value || switching.value) return
+  if (mode.value === 'edit') {
+    sourceEditing.value = source
+    return
+  }
   if (health.epochChanged) {
     ui.toast({ kind: 'warning', message: '数据已被恢复或替换，请重新加载页面后再编辑' })
     return
@@ -459,6 +464,7 @@ async function enterEdit() {
   switching.value = true
   try {
     await classifyDrafts(doc.value)
+    sourceEditing.value = source
     startEdit(null)
   } finally {
     switching.value = false
@@ -1181,13 +1187,32 @@ defineExpose({
               <button
                 type="button"
                 class="btn btn-sm"
-                :aria-pressed="mode === 'edit'"
+                :aria-pressed="mode === 'edit' && !sourceEditing"
                 :disabled="switching || health.epochChanged"
-                @click="enterEdit"
+                @click="enterEdit(false)"
               >
                 <AppIcon name="edit" :size="14" />编辑
               </button>
+              <button
+                type="button"
+                class="btn btn-sm"
+                :aria-pressed="mode === 'edit' && sourceEditing"
+                :disabled="switching || health.epochChanged"
+                @click="enterEdit(true)"
+              >
+                源编辑
+              </button>
             </div>
+            <button
+              v-if="mode === 'edit'"
+              type="button"
+              class="btn btn-sm"
+              :disabled="!editorReady"
+              title="在源码中查找和替换（Ctrl/Cmd+F 或 Ctrl/Cmd+H）"
+              @click="editorRef?.openSearch()"
+            >
+              <AppIcon name="search" :size="14" />查找与替换
+            </button>
             <button
               type="button"
               class="btn btn-icon outline-toggle"
@@ -1292,9 +1317,10 @@ defineExpose({
           <div v-if="!editorReady" class="editor-loading" aria-busy="true">
             <span class="spinner" aria-hidden="true" /> 正在准备编辑器…
           </div>
-          <MarkdownEditor
+          <ArticleEditor
             ref="editorRef"
             :key="editSessionId ?? 'editor'"
+            v-model:source="sourceEditing"
             :value="editorInitial"
             :theme="theme"
             :readonly="editorLocked"
