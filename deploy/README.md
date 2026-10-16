@@ -2,9 +2,11 @@
 
 本目录提供部署模板。执行前请将 `deploy/ljmdb-backend.service` 中的用户、项目目录和数据目录占位符替换为本机值，并按需调整 Nginx 域名。
 
-Nginx 在 IPv4 / IPv6 的 9955 端口提供前端，并代理 `/api/` 到仅监听 `127.0.0.1:19955` 的 Go 后端。后端数据目录为 `/path/to/OpenLJMDB-data`。访问入口为 `http://<PUBLIC_HOST>:9955/`，导航为 `http://<PUBLIC_HOST>:10000/`。
+仓库默认模板中，Nginx 在 IPv4 / IPv6 的 9955 端口提供前端，并代理 `/api/` 到仅监听 `127.0.0.1:19955` 的 Go 后端。后端数据目录为 `/path/to/OpenLJMDB-data`。访问入口为 `http://<PUBLIC_HOST>:9955/`，导航为 `http://<PUBLIC_HOST>:10000/`。
 
-当前入口使用 HTTP，应用尚无登录鉴权，能够访问该端口的用户可以读取及修改知识库。Nginx 在转写回环 Host / Origin 前校验浏览器的原始同源信息，并保留后端的跨站及数据世代校验。
+默认模板使用 HTTP，应用尚无登录鉴权，能够访问该端口的用户可以读取及修改知识库。Nginx 在转写回环 Host / Origin 前校验浏览器的原始同源信息，并保留后端的跨站及数据世代校验。
+
+这些脚本针对默认 HTTP 入口及 `/var/www/openljmdb/current` 发布路径。已有部署若定制了 HTTPS、域名、端口或静态目录，请先核对实际 Nginx / systemd 配置，同步调整脚本的校验 URL 和发布路径；直接使用默认脚本不能验证定制入口。
 
 更新部署：
 

@@ -7,7 +7,7 @@
 - **框架**: Vue 3 (Composition API)
 - **状态管理**: Pinia
 - **路由**: Vue Router 4
-- **编辑器**: Vditor 3.11.3（IR 即时渲染模式）
+- **编辑器**: Vditor 3.11.3（IR 即时渲染模式）与 Markdown 源码编辑
 - **Markdown 渲染**: Vditor / Lute，阅读内容通过 DOMPurify 净化
 - **公式与图表**: KaTeX、Mermaid，运行资源随项目本地提供
 - **构建工具**: Vite
@@ -63,7 +63,8 @@ src/
 ## 特性
 
 - 🤖 Markdown 导入自动分类：根据完整笔记内容推荐知识库，显示匹配概率，确认前可逐篇修改
-- 📝 Vditor 即时渲染编辑、自动保存、IndexedDB 本地草稿与冲突检测
+- 📝 Vditor 即时渲染与源码编辑切换、自动保存、IndexedDB 本地草稿与冲突检测
+- 🔎 源码查找替换、区分大小写、循环定位、单次与全部替换、撤销重做
 - 🌳 层级文档树、新建与重命名、键盘导航
 - 🧮 公式、Mermaid 图表与代码语法高亮
 - 🔍 全文搜索与高亮
@@ -72,10 +73,13 @@ src/
 - 🗑️ 回收站
 - 💾 完整备份与恢复
 - 📥 多篇 Markdown / ZIP 导入、Markdown 与离线 HTML 资源包导出
+- 🖼️ 图片导出：可选背景、单张 PNG 长图与多页 PNG 图片 ZIP
 - 🌓 浅色/深色主题
 - 📱 响应式设计
 
 导入自动分类默认关闭，需要后端配置分类服务并在“设置 → 导入”开启、保存。开启后，笔记标题、完整 Markdown 正文及知识库名称、描述会发送至分类服务；自动选择概率最高的知识库，支持停止、重试和手动调整。ZIP 保留父子结构，不参与自动分类。配置步骤见[部署说明](../deploy/README.md#导入自动分类)。
+
+文档顶部“源编辑”直接编辑 Markdown 原文；编辑时点击“查找与替换”或在编辑区按 `Ctrl/Cmd+F` / `Ctrl/Cmd+H`，会进入源码模式打开查找面板。按 `Enter` / `Shift+Enter` 循环定位，`Esc` 关闭；替换按字面文本执行，空值表示删除，一次全部替换可整体撤销。`ArticleEditor.vue` 负责模式切换与源码操作，`MarkdownEditor.vue` 封装 Vditor，`editor/sourceSearch.ts` 提供原文匹配及替换。
 
 ## 浏览器支持
 

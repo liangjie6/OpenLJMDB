@@ -15,6 +15,8 @@ make build
 
 默认地址为 `http://127.0.0.1:8080`，接口前缀 `/api/v1`。启动输出显示实际数据目录。省略 `--data-dir` 时使用系统用户数据目录；`--portable` 使用可执行文件同级的 `data` 目录。参数优先于 `LJMDB_HOST`、`LJMDB_PORT`、`LJMDB_DATA_DIR` 环境变量。`--portable` 与数据目录参数或环境变量冲突时拒绝启动。非回环地址拒绝启动。
 
+后端会自动从当前工作目录、可执行文件所在目录及其上一级、上两级目录依次读取 `.env`；已有非空环境变量及较早文件中的非空值优先。可从项目根目录复制 `.env.example` 为 `.env` 后编辑，修改后重启进程。配置表与全部命令行参数见[根 README 的运行配置](../README.md#运行配置)。示例默认端口为 8080，systemd 模板通过参数使用 19955。
+
 ```bash
 ./dist/ljmdb --port 8081 --no-open
 ./dist/ljmdb --version

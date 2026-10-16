@@ -10,7 +10,7 @@
 
 **简体中文** | [English](README.en.md)
 
-[简介](#简介) • [自动分类](#导入自动分类) • [功能特性](#功能亮点) • [项目截图](#项目截图) • [快速开始](#快速开始) • [分类服务配置](#配置自动分类) • [开发与验证](#开发与验证) • [参与共建](#更多文档与贡献) • [开源协议](#开源协议)
+[简介](#简介) • [自动分类](#导入自动分类) • [功能特性](#功能亮点) • [项目截图](#项目截图) • [快速开始](#快速开始) • [运行配置](#运行配置) • [分类服务配置](#配置自动分类) • [开发与验证](#开发与验证) • [数据备份](#数据与备份) • [常见问题](#常见问题) • [参与共建](#更多文档与贡献) • [开源协议](#开源协议)
 
 </div>
 
@@ -43,7 +43,8 @@ ZIP 资料包保留父子结构，统一选择整包导入位置，不参与自�
 | 功能 | 说明 |
 | --- | --- |
 | 知识库与文档树 | 多知识库、知识库描述、层级文档、新建子文档、重命名和删除 |
-| Markdown 编辑与阅读 | Vditor 即时渲染编辑器、独立阅读视图、大纲导航、代码高亮、KaTeX 公式和 Mermaid 图表 |
+| Markdown 编辑与阅读 | Vditor 即时渲染、Markdown 源码编辑、独立阅读视图、大纲导航、代码高亮、KaTeX 公式和 Mermaid 图表 |
+| 源码查找与替换 | 按原文查找、区分大小写、循环定位、单次或全部替换，以及撤销和重做 |
 | 自动保存与草稿 | 保存状态提示、IndexedDB 本地草稿、版本冲突检测与人工合并 |
 | 全文搜索 | 按知识库检索标题和正文，支持中文子串回退、命中高亮与导航 |
 | 图片与附件 | 上传、粘贴或拖入图片和附件，管理引用及未引用附件清理 |
@@ -55,9 +56,16 @@ ZIP 资料包保留父子结构，统一选择整包导入位置，不参与自�
 
 文档右上角“文档操作 → 导出为图片…”可选择背景，并预览标题和正文。选择单张长图可下载 PNG；选择多页图片可按页面比例分页，下载包含顺序编号 PNG 的 ZIP。编辑时使用打开导出窗口时的当前内容。超长文档请使用多页图片；无法载入的图片会以提示框标注。
 
+### 编辑与查找替换
+
+- 文档顶部提供“阅读”“编辑”“源编辑”。“编辑”使用 Vditor 即时渲染；“源编辑”直接操作 Markdown 原文，适合调整代码块、链接和 Markdown 标记。
+- 在编辑状态点击“查找与替换”，或在编辑区域按 `Ctrl/Cmd+F` / `Ctrl/Cmd+H`，会进入源码模式并打开查找面板。
+- 查找按字面内容匹配，支持区分大小写；`Enter` 跳到下一处，`Shift+Enter` 跳到上一处，`Esc` 关闭面板。替换内容为空时删除匹配文本。
+- 源码模式提供撤销和重做；一次“全部替换”可整体撤销。两种编辑模式共用自动保存、草稿和冲突保护。
+
 ## 项目截图
 
-以下截图来自实际运行的应用，使用独立的演示知识库。自动分类截图中的推荐结果由本地模拟分类服务生成，用于展示操作流程，不代表真实模型评测结果。截图说明见 [docs/images/README.md](docs/images/README.md)。
+以下截图于 2026 年 10 月 10 日从实际运行的应用捕获，使用独立的演示知识库；后续增加的源码编辑和图片导出未在这些截图中展示。自动分类截图中的推荐结果由本地模拟分类服务生成，用于展示操作流程，不代表真实模型评测结果。截图说明见 [docs/images/README.md](docs/images/README.md)。
 
 ### 知识库工作区
 
@@ -99,10 +107,12 @@ npm --prefix web ci
 make build
 make web-build
 
-./backend/dist/ljmdb --data-dir ./data --web-dir ./web/dist --no-open
+./backend/dist/ljmdb --host 127.0.0.1 --port 8080 --data-dir ./data --web-dir ./web/dist --no-open
 ```
 
 打开 **[http://127.0.0.1:8080](http://127.0.0.1:8080)**。后端同时提供前端页面和 `/api/v1` 接口；数据保存在项目根目录的 `data/`，与构建产物分离。使用 Ctrl+C 正常退出。
+
+如果 8080 已被其他程序占用，将 `--port 8080` 改为可用端口（例如 `--port 8081`），并访问对应地址。无需配置分类服务即可开始使用。
 
 没有 `make` 时，可将两个构建命令替换为：
 
@@ -119,6 +129,44 @@ Windows 可将输出文件改为 `dist/ljmdb.exe`，然后运行 `./backend/dist
 2. 新建文档开始编写，或进入“导入”选择 Markdown 文件或 ZIP 资料包。
 3. 如需自动分类，配置后端分类服务，再在设置中开启“导入自动分类”。
 4. 在导入确认页检查文档位置，确认后导入；定期通过“备份与恢复”创建完整备份。
+
+## 运行配置
+
+### 环境变量与 .env
+
+可以通过进程环境变量或 `.env` 配置后端。从项目根目录运行时：
+
+```bash
+cp .env.example .env
+```
+
+编辑 `.env` 填写所需配置；无需自动分类时，可以删除或留空两个 `LJMDB_DECISION_*` 配置项。`.env` 已被 Git 忽略，请将密钥保留在本机。
+
+| 环境变量 | 默认值 | 用途 |
+| --- | --- | --- |
+| `LJMDB_HOST` | `127.0.0.1` | 监听 IP，只允许回环地址，如 `127.0.0.1` 或 `::1` |
+| `LJMDB_PORT` | `8080` | 后端 HTTP 端口 |
+| `LJMDB_DATA_DIR` | 系统用户数据目录 | 数据存储路径 |
+| `LJMDB_DECISION_BASE_URL` | 未配置 | 分类服务站点根地址，不带 `/v1` |
+| `LJMDB_DECISION_API_KEY` | 未配置 | 分类服务密钥 |
+
+程序依次查找当前工作目录、可执行文件所在目录、可执行文件上一级和上两级目录中的 `.env`。已有非空环境变量优先，较早读到的非空值不会被后续文件覆盖；命令行参数优先于对应环境变量。支持 `KEY=value`、引号包裹的值、`export KEY=value` 和整行 `#` 注释；不执行 shell 脚本或变量展开。
+
+修改配置后需要重启后端。使用相对数据路径时，路径相对于进程工作目录解析；长期运行建议指定绝对路径。
+
+### 命令行参数
+
+| 参数 | 说明 |
+| --- | --- |
+| `--host <IP>` | 回环监听 IP，默认 `127.0.0.1` |
+| `--port <端口>` | HTTP 端口，默认 `8080` |
+| `--data-dir <路径>` | 指定数据目录 |
+| `--web-dir <路径>` | 已构建的前端目录，需包含 `index.html`；省略时仅提供 API |
+| `--portable` | 使用可执行文件同级的 `data/`，与 `--data-dir` / `LJMDB_DATA_DIR` 互斥 |
+| `--no-open` | 不自动打开浏览器 |
+| `--version` | 输出版本并退出 |
+
+后端直接监听仅支持回环 IP。需要通过 Nginx 提供访问入口时，参照 [部署说明](deploy/README.md) 配置；当前应用没有登录鉴权，访问入口应限于可信环境。
 
 ## 配置自动分类
 
@@ -160,7 +208,7 @@ sudo bash deploy/configure-classifier.sh https://your-classifier.example.com
 
 ```bash
 make build
-./backend/dist/ljmdb --data-dir ./data --no-open
+./backend/dist/ljmdb --host 127.0.0.1 --port 8080 --data-dir ./data --no-open
 ```
 
 终端二，启动前端：
@@ -175,6 +223,8 @@ npm --prefix web run dev
 
 访问 **[http://localhost:5173](http://localhost:5173)**；Vite 将 `/api` 代理到 `http://localhost:8080`。生产运行使用上面的 `--web-dir` 方式保持页面与 API 同源。
 
+若开发后端使用其他端口，请同步修改 [web/vite.config.ts](web/vite.config.ts) 的 `server.proxy['/api'].target`。
+
 | 命令 | 用途 |
 | --- | --- |
 | `make build` | 构建 Go 后端到 `backend/dist/ljmdb` |
@@ -183,9 +233,26 @@ npm --prefix web run dev
 | `make check` | 运行 `go vet` 和后端 race 测试 |
 | `npm --prefix web run type-check` | 前端 TypeScript 检查 |
 | `npm --prefix web test` | 运行前端 Vitest 测试 |
-| `make release` | 构建 Linux、macOS、Windows 的 amd64 / arm64 后端发行包及校验和 |
+| `make release` | 构建 Linux、macOS、Windows 的 amd64 / arm64 后端二进制、第三方声明和 SHA256 校验和 |
 
-`make release` 只打包后端；前端需要单独构建并通过 `--web-dir` 提供。跨平台编译不代表各目标平台已完成运行验收。
+`make release` 将产物写入 `backend/dist/`，不包含前端；前端需要单独构建并通过 `--web-dir` 提供。跨平台编译不代表各目标平台已完成运行验收。
+
+### 更新已有部署
+
+更新前先通过应用创建完整备份，在源码目录拉取更新，再构建和验证：
+
+```bash
+git pull --ff-only
+npm --prefix web ci
+make check
+npm --prefix web test
+make build
+make web-build
+```
+
+直接运行的实例应先正常停止旧进程，再使用原有数据目录和启动参数运行新版本。已有 Nginx / systemd 部署可用 `sudo bash deploy/update-web.sh` 更新前端；同时更新后端时先构建 `deploy/bin/ljmdb.next`，再运行 `sudo bash deploy/update-app.sh`。完整前提、构建命令和回退行为见 [deploy/README.md](deploy/README.md)。
+
+更新脚本面向仓库默认 HTTP 部署模板。自定义 HTTPS、域名、端口或静态目录时，应先将脚本的校验入口和发布路径调整为实际配置。
 
 ## 项目结构
 
@@ -199,6 +266,7 @@ OpenLJMDB/
 │   └── public/            # 图标、字体和本地资源
 ├── docs/                  # 产品、架构、接口、验收和截图
 ├── deploy/                # Nginx / systemd 模板、更新与分类配置脚本
+├── .env.example           # 后端环境变量示例，不包含真实密钥
 ├── README.md              # 中文说明
 ├── README.en.md           # English documentation
 └── Makefile               # 根目录构建与检查入口
@@ -223,6 +291,24 @@ OpenLJMDB/
 ```
 
 内容导出用于交换和离线阅读；完整备份保留原始 ID、历史、回收站和持久设置。浏览器中的 IndexedDB 草稿不包含在后端备份内。程序运行时请使用应用内备份，避免直接复制活跃的 SQLite 数据库。
+
+未指定数据目录时，Linux 使用 `$XDG_DATA_HOME/LJMDB`（未设置时为 `~/.local/share/LJMDB`），macOS 使用 `~/Library/Application Support/LJMDB`，Windows 优先使用 `%LOCALAPPDATA%/LJMDB`。启动输出会给出最终绝对路径。
+
+## 常见问题
+
+| 问题 | 处理方式 |
+| --- | --- |
+| 启动提示端口不可用 | 使用 `--port` 选择空闲端口；开发模式同时调整 Vite API 代理 |
+| 后端启动了，但没有应用页面 | 先构建前端，再传入 `--web-dir ./web/dist`；仅启动 API 时可访问 `/api/v1/health` |
+| 开发时编辑器或公式资源加载失败 | 在 `web/` 执行 `npm ci` 和 `npm run prebuild`，然后重启 Vite |
+| `.env` 修改后没有生效 | 重启后端，核对工作目录，以及命令行参数和已有环境变量是否覆盖了配置 |
+| 自动分类不可用 | 核对站点根地址、密钥和 `/v1/systemone` 支持，重启后端，并确认设置中的开关已开启保存；ZIP 不参与分类 |
+| 出现版本冲突或本地草稿提示 | 保留草稿，通过界面对比与人工合并，确认内容后再保存 |
+| 恢复备份后旧页面无法写入 | 重新加载页面，并按提示确认本地草稿；恢复会更新数据世代以阻止旧页面覆盖内容 |
+| 导出图片过长或失败 | 切换为多页图片，等待文内图片加载，并检查浏览器内存及外部图片是否允许跨域读取 |
+| 无法直接用 `0.0.0.0` 监听 | 当前后端仅支持回环地址；使用部署模板配置 Nginx 入口 |
+
+排查本机部署可查看 `journalctl -u ljmdb-backend -n 50`，直接运行可查看终端及数据目录中的 `logs/server.log`。提交日志前请移除密钥和个人内容。
 
 ## 更多文档与贡献
 
